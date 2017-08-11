@@ -12,7 +12,6 @@
 /*****************************************************************************
  * Define the frequency of external clock source
  *****************************************************************************/
-
 #define EXT_XT1_CLOCK_IN    32768               // ideally 32768 Hz
 #define EXT_XT2_CLOCK_IN    0                   // 4MHz, but not used
 
@@ -44,11 +43,11 @@ void main(void)
     /* Stop WDT */
     WDT_A_hold(WDT_A_BASE);
 
-    /* Set P1.0 to output direction */
+    /* Set P1.0 to output direction - LED1 */
     GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
     GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);        // just to debug
 
-    /* Set P4.7 to output direction */
+    /* Set P4.7 to output direction - LED2 */
     GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN7);
     GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_PIN7);        // just to debug
 
@@ -122,8 +121,6 @@ void main(void)
     SFR_clearInterrupt(SFR_OSCILLATOR_FAULT_INTERRUPT);
     SFR_enableInterrupt(SFR_OSCILLATOR_FAULT_INTERRUPT);
 
-    //    /* Enable global interrupt */
-    //    __bis_SR_register(GIE);
 
     /*******************************************************************************
      *                      TIMER A SETUP AND TIMEOUT LIB INIT
@@ -144,14 +141,15 @@ void main(void)
     __no_operation();
 
     uint16_t repeat_delay;
-    /* test delay function */
+    /*
+     * Blink LEDs 4 times - use delayMs()
+     */
     for (repeat_delay = 0; repeat_delay < 4; repeat_delay++)
     {
         GPIO_toggleOutputOnPin(GPIO_PORT_P1, GPIO_PIN0);
         GPIO_toggleOutputOnPin(GPIO_PORT_P4, GPIO_PIN7);
         delayMs(200);
     }
-    __no_operation();
 
     uint32_t lastexection_1 = 0;
     uint32_t lastexection_2 = 0;
@@ -159,12 +157,12 @@ void main(void)
     while (1)
     {
         /*
-         * blink LED1 (red) every 333ms
+         * blink LED1 (red) every 234ms
          * - use getTime_ms
          */
-        if ((getTime_ms() - lastexection_1) >= 333)
+        if ((getTime_ms() - lastexection_1) >= 234)
         {
-            GPIO_toggleOutputOnPin(             // toggle P1.0
+            GPIO_toggleOutputOnPin(             // toggle LED1
                     GPIO_PORT_P1,
                     GPIO_PIN0
             );
@@ -173,18 +171,19 @@ void main(void)
 
 
         /*
-         * blink LED2 (green) every 500ms
+         * blink LED2 (green) every 1000ms
          * - use getTime_ms
          */
-        if (timeoutCheck_ms(500, lastexection_2))
+        if (timeoutCheck_ms(1000, lastexection_2))
         {
             lastexection_2 = timeoutInit();         // get the current time
 
-            GPIO_toggleOutputOnPin(                 // toggle P1.0
+            GPIO_toggleOutputOnPin(                 // toggle LED2
                     GPIO_PORT_P4,
                     GPIO_PIN7
             );
         }
+
     }
 }
 
