@@ -126,7 +126,12 @@ void main(void)
      *                      TIMER A SETUP AND TIMEOUT LIB INIT
      *******************************************************************************/
     volatile uint32_t compare_value = 0;
-    /* set compare value to get tick of 100us (10kHz) */
+    /*
+     * set compare value to get tick of 100us (10kHz)
+     * - prefer to use values that returns integer numbers in this division
+     *   (1000000 / tick_freq)
+     * - in the example, (1000000 / 10000) = 100
+     */
     compare_value = setCompareValue( 10000, UCS_getSMCLK() );
     delayInit();                                            // start timeout lib
 

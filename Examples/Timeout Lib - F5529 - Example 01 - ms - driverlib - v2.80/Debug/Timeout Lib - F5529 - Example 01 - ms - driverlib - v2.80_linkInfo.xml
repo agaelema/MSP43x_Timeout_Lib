@@ -2,7 +2,7 @@
 <link_info>
    <banner>MSP430 Linker PC v16.9.3.LTS</banner>
    <copyright>Copyright (c) 2003-2017 Texas Instruments Incorporated</copyright>
-   <link_time>0x598dbc0a</link_time>
+   <link_time>0x59946550</link_time>
    <link_errors>0x0</link_errors>
    <output_file>Timeout Lib - F5529 - Example 01 - ms - driverlib - v2.80.out</output_file>
    <entry_point>

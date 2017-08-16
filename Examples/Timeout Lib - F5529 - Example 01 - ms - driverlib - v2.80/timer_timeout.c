@@ -66,6 +66,10 @@ static __inline uint32_t _HwTick(void)
  *      - calculate some constants to compensate the clock of used timer
  *      - enable to use timer clock lower than 1MHz (less overload to CPU
  *        due the accumulator inside the timer interrupt)
+ *
+ *      - prefer to use values that returns integer numbers in this division
+ *        (1000000 / tick_freq), where 1000000 is the frequency of 1us Tick
+ *      - like, (1000000 / 10000) = 100
  *******************************************************************************/
 uint32_t setCompareValue(uint32_t timerFreq, uint32_t timerCLK)
 {
